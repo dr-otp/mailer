@@ -45,7 +45,7 @@ export class EmailService extends PrismaClient implements OnModuleInit {
       const from = envs.emailFrom;
       const template = readFileSync('./src/email/templates/otp-template.html', 'utf8');
       const html = template.replace(/{{otp}}/g, otp).replace(/{{username}}/g, username);
-      // const resp = (await this.mailer.sendMail({ from, to, subject: `Your OTP [${otp}]`, html })) as EmailResponse;
+      const resp = (await this.mailer.sendMail({ from, to, subject: `Your OTP [${otp}]`, html })) as EmailResponse;
 
       this.logger.log(`Email sent to ${to} with OTP: ${otp}`);
       await this.email.create({
@@ -54,7 +54,7 @@ export class EmailService extends PrismaClient implements OnModuleInit {
           subject: `Your OTP [${otp}]`,
           text: html,
           from,
-          // messageId: resp?.messageId,
+          messageId: resp?.messageId,
         },
       });
 
